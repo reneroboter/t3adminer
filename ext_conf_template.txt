@@ -1,0 +1,8 @@
+  # cat=basic; type=string; label=Access from IPs: Access allowed from IPs (comma separated list)
+IPaccess =
+
+  # cat=basic; type=boolean; label=Apply devIpMask: Restrict access to IPs from devIpMask (see: Install Tool). Priority over 'IPaccess' setting
+applyDevIpMask = 0
+
+  # cat=basic; type=string; label=Export directory; can be an absolute path or relative to the doc root.
+exportDirectory = fileadmin
