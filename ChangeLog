@@ -1,3 +1,9 @@
+2016-07-18 Jigal van Hemert <jigal.van.hemert@typo3.org>
+
+	* Add composer.json
+	* Compatibility with TYPO3 8.2
+	* Version 7.0.9
+
 2016-04-12 Jigal van Hemert <jigal.van.hemert@typo3.org>
 
 	* Compatibility with TYPO3 8.1 (new database configuration)

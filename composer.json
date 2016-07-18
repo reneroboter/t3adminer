@@ -1,0 +1,33 @@
+{
+  "name": "jigal/t3adminer",
+  "description": "Adminer as BE module to work with the database",
+  "keywords": [
+    "TYPO3",
+    "database",
+    "Adminer",
+    "phpMyAdmin"
+  ],
+  "homepage": "https://forge.typo3.org/projects/extension-t3adminer",
+  "support": {
+    "issues": "https://forge.typo3.org/projects/extension-t3adminer/issues"
+  },
+  "authors": [
+    {
+      "name": "Jigal van Hemert",
+      "email": "jigal.van.hemert@typo3.org",
+      "role": "Developer",
+      "homepage": "http://www.typo3coder.nl"
+    }
+  ],
+  "license": "GPL-2.0+",
+  "require": {
+    "ext-Phar": "*",
+    "php": ">=5.5.0",
+    "typo3/cms-core": "^7.6 || ^8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "jigal\\t3adminer\\": "Classes/"
+    }
+  }
+}
