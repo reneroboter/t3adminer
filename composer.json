@@ -1,6 +1,7 @@
 {
   "name": "jigal/t3adminer",
   "description": "Adminer as BE module to work with the database",
+  "type": "typo3-cms-extension",
   "keywords": [
     "TYPO3",
     "database",
@@ -23,7 +24,7 @@
   "require": {
     "ext-Phar": "*",
     "php": ">=5.5.0",
-    "typo3/cms-core": "^7.6 || ^8.0"
+    "typo3/cms-core": "^7.6 || ^8.0.0"
   },
   "autoload": {
     "psr-4": {

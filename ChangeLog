@@ -1,3 +1,10 @@
+2016-08-31 Jigal van Hemert <jigal.van.hemert@typo3.org>
+
+	* Fix composer.json
+	* Tested with TYPO3 8.3
+	* Update to Adminer 4.2.5
+	* Version 7.0.10
+
 2016-07-18 Jigal van Hemert <jigal.van.hemert@typo3.org>
 
 	* Add composer.json
