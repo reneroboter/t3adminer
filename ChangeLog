@@ -1,5 +1,15 @@
 2016-08-31 Jigal van Hemert <jigal.van.hemert@typo3.org>
 
+	* Update to Adminer 4.3.1
+	* Compatibility for TYPO3 8.7 LTS only (finally! Sorry it took me soooo long)
+	* Thanks to Dan Untenzu, Simon Schaufelberger for their contributions
+	* Fix DBMS driver detection
+	* #3 Adds port to host name if it is set (suggestion by Cedric Ziel)
+	* Use other svg filename for "add" icon for future compatibility
+	* Version 8.0.0
+
+2016-08-31 Jigal van Hemert <jigal.van.hemert@typo3.org>
+
 	* Fix composer.json
 	* Tested with TYPO3 8.3
 	* Update to Adminer 4.2.5
