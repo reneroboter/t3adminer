@@ -1,3 +1,7 @@
+2017-06-23 Jigal van Hemert <jigal.van.hemert@typo3.org>
+
+	* Bugfix, missing adminer sources
+
 2016-08-31 Jigal van Hemert <jigal.van.hemert@typo3.org>
 
 	* Update to Adminer 4.3.1
