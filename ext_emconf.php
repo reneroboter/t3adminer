@@ -1,5 +1,5 @@
 <?php
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
 	'title' => 'Adminer',
 	'description' => 'Database administration tool \'Adminer\'',
 	'category' => 'module',
@@ -11,14 +11,12 @@ $EM_CONF[$_EXTKEY] = array(
 	'uploadfolder' => 0,
 	'createDirs' => '',
 	'clearCacheOnLoad' => 0,
-	'version' => '8.0.1',
-	'constraints' => array(
-		'depends' => array(
-			'typo3' => '8.7.0-8.7.99',
-		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
-	),
-);
+	'version' => '9.0.0',
+	'constraints' => [
+		'depends' => [
+			'typo3' => '8.7.0-9.0.99',
+        ],
+		'conflicts' => [],
+		'suggests' => [],
+    ],
+];

@@ -4,6 +4,7 @@ namespace jigal\t3adminer\Controller;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -60,14 +61,14 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->MCONF = $GLOBALS['TBE_MODULES']['_configuration']['tools_txt3adminerM1'];
 
             // Get config
-            $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['t3adminer']);
+            $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['t3adminer'], false);
 
             // IP-based Access restrictions
             $devIPmask = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
             $remoteAddress = GeneralUtility::getIndpEnv('REMOTE_ADDR');
 
             // Check for devIpMask restriction
-            $useDevIpMask = (boolean)$extensionConfiguration['applyDevIpMask'];
+            $useDevIpMask = (bool)$extensionConfiguration['applyDevIpMask'];
             if ($useDevIpMask === true) {
                 // Only use devIPmask if it is specific (not '*')
                 if ($devIPmask !== '*') {
@@ -97,7 +98,7 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->MCONF['ADM_absolute_path'] = $extPath . $this->MCONF['ADM_subdir'];
 
             // Path to web dir
-            $relativePathToAdminer = ExtensionManagementUtility::siteRelPath('t3adminer');
+            $relativePathToAdminer = PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('t3adminer'));
             $this->MCONF['ADM_relative_path'] =
                 (StringUtility::beginsWith($relativePathToAdminer, TYPO3_mainDir)
                 ? substr($relativePathToAdminer, strlen(TYPO3_mainDir))
@@ -149,16 +150,19 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $_SESSION['ADM_extConf'] = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['t3adminer'];
                 $_SESSION['ADM_hideOtherDBs'] = $extensionConfiguration['hideOtherDBs'];
 
+                // Store TCA in the session to have extra information later on
+                $_SESSION['ADM_tca'] = $GLOBALS['TCA'];
+
                 // Get signon uri for redirect
                 $path_ext = substr($extPath, strlen($typo3DocumentRoot), strlen($extPath));
-                $path_ext = (substr($path_ext, 0, 1) != '/' ? '/' . $path_ext : $path_ext);
+                $path_ext = '/' . ltrim($path_ext, '/');
                 $path_adm = $path_ext . $this->MCONF['ADM_subdir'];
                 $_SESSION['ADM_SignonURL'] = $path_adm . $this->MCONF['ADM_script'];
 
                 // Try to get the TYPO3 backend uri even if it's installed in a subdirectory
                 // Compile logout path and add a slash if the returned string does not start with
                 $path_typo3 = substr(PATH_typo3, strlen($typo3DocumentRoot), strlen(PATH_typo3));
-                $path_typo3 = (substr($path_typo3, 0, 1) != '/' ? '/' . $path_typo3 : $path_typo3);
+                $path_typo3 = '/' . ltrim($path_typo3, '/');
                 $_SESSION['ADM_LogoutURL'] = $path_typo3 . 'logout.php';
 
                 // Prepend document root if uploadDir does not start with a slash "/"

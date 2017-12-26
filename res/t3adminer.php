@@ -33,13 +33,15 @@ function adminer_object()
         include_once "./$filename";
     }
 
-    $plugins = array(
+    $plugins = [
         // specify enabled plugins here
         new AdminerFrames,
         new AdminerVersionNoverify,
         new AdminerDumpSaveServer($_SESSION['exportDirectory']),
         new AdminerLinksDirect,
-    );
+        new AdminerReadableDates(),
+        new AdminerRestoreMenuScroll()
+    ];
 
     class AdminerSoftware extends AdminerPlugin
     {
@@ -49,7 +51,7 @@ function adminer_object()
          *
          * @return string
          */
-        function name()
+        public function name()
         {
             return 'T3Adminer';
         }
@@ -60,7 +62,7 @@ function adminer_object()
          * @param boolean $create
          * @return string
          */
-        function permanentLogin($create = false)
+        public function permanentLogin($create = false)
         {
             return "74b941992ef29727ccabf82889fe837a";
         }
@@ -70,13 +72,13 @@ function adminer_object()
          *
          * @return array
          */
-        function credentials()
+        public function credentials()
         {
-            return array(
+            return [
                 $_SESSION['ADM_server'],
                 $_SESSION['ADM_user'],
                 $_SESSION['ADM_password']
-            );
+            ];
         }
 
         /**
@@ -84,7 +86,7 @@ function adminer_object()
          *
          * @return mixed
          */
-        function database()
+        public function database()
         {
             return $_SESSION['ADM_db'];
         }
@@ -92,7 +94,7 @@ function adminer_object()
         /**
          * disable login form
          */
-        function loginForm()
+        public function loginForm()
         {
         }
 
@@ -102,12 +104,12 @@ function adminer_object()
          * @param array $tables
          * @return null
          */
-        function tablesPrint($tables)
+        public function tablesPrint($tables)
         {
             echo '<p id="tables">' . "\n";
             foreach ($tables as $table => $type) {
                 echo '<span class="tables-line';
-                if ($_GET["select"] == $table or $_GET['table'] == $table) {
+                if ($_GET["select"] === $table or $_GET['table'] == $table) {
                     echo '-active';
                 }
                 echo '">';
@@ -125,7 +127,7 @@ function adminer_object()
          *
          * @return bool whether to print default homepage
          */
-        function homepage()
+        public function homepage()
         {
             echo '<p class="tabs">' .
                 ($_GET['ns'] == '' ? '<a href="' . h(ME) . 'database=">' . lang('Alter database') . "</a>\n" : '');

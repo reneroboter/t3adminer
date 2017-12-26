@@ -1,3 +1,13 @@
+2017-12-26 Jigal van Hemert <jigal.van.hemert@typo3.org>
+
+	* Compatibility for TYPO3 9.0
+	* Compatibility for PHP 7.2
+	* Plug-in to display UNIX timestamps in readable format (based on TCA config)
+	* Plug-in to scroll to the selected table in table list column
+	* Table list can scroll sideways to show long table names
+	* Version 9.0.0
+	* Removed some unused images
+
 2017-06-23 Jigal van Hemert <jigal.van.hemert@typo3.org>
 
 	* Bugfix, missing adminer sources

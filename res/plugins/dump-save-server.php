@@ -16,15 +16,15 @@
 class AdminerDumpSaveServer
 {
     /** @access protected */
-    var $dir;
-    var $fileName;
+    protected $dir;
+    protected $fileName;
 
     /**
      * AdminerDumpSaveServer constructor.
      *
      * @param null $dir
      */
-    function __construct($dir = null)
+    public function __construct($dir = null)
     {
         $this->dir = $dir;
     }
@@ -34,12 +34,12 @@ class AdminerDumpSaveServer
      *
      * @return array
      */
-    function dumpOutput()
+    public function dumpOutput()
     {
         return array('server' => 'Server');
     }
 
-    static public function _redirect($location, $message = null)
+    public static function _redirect($location, $message = null)
     {
         if ($message !== null) {
             restart_session();
@@ -54,9 +54,9 @@ class AdminerDumpSaveServer
         }
     }
 
-    function _save($string, $state)
+    public function _save($string, $state)
     {
-        if ($_POST['output'] == 'server') {
+        if ($_POST['output'] === 'server') {
             if (function_exists('header_remove')) {
                 header_remove('Content-Disposition');
                 header_remove('Content-Type');
@@ -72,9 +72,9 @@ class AdminerDumpSaveServer
         }
     }
 
-    function dumpHeaders($identifier, $multi_table = false)
+    public function dumpHeaders($identifier, $multi_table = false)
     {
-        if ($_POST['output'] == 'server') {
+        if ($_POST['output'] === 'server') {
             $this->fileName = $identifier . '.' . ($multi_table && preg_match('/[ct]sv/', $_POST["format"]) ? 'tar' : $_POST['format']);
             ob_start(array($this, '_save'));
         }
