@@ -61,7 +61,7 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->MCONF = $GLOBALS['TBE_MODULES']['_configuration']['tools_txt3adminerM1'];
 
             // Get config
-            $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['t3adminer'], false);
+            $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['t3adminer'], ['allowed_classes' => false]);
 
             // IP-based Access restrictions
             $devIPmask = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
