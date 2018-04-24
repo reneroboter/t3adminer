@@ -11,12 +11,7 @@ if (TYPO3_MODE === 'BE') {
 			'routeTarget' => jigal\t3adminer\Controller\AdminerController::class . '::main',
 			'access' => 'admin',
 			'name' => 'tools_txt3adminerM1',
-			'labels' => [
-				'tabs_images' => [
-					'tab' => 'EXT:t3adminer/Resources/Public/Icons/module-adminer.svg'
-                ],
-				'll_ref' => 'LLL:EXT:t3adminer/mod1/locallang_mod.xml',
-            ],
+			'labels' => 'LLL:EXT:t3adminer/mod1/locallang_mod.xml',
             'icon' => 'EXT:t3adminer/Resources/Public/Icons/module-adminer.svg',
 			'ADM_subdir' => 'res/',
 			'ADM_script' => 't3adminer.php',
