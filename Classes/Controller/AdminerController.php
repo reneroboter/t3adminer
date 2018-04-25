@@ -2,10 +2,12 @@
 namespace jigal\t3adminer\Controller;
 
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -28,7 +30,7 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function __construct()
     {
-        $GLOBALS['LANG']->includeLLFile('EXT:t3adminer/mod1/locallang.xml');
+        $GLOBALS['LANG']->includeLLFile('EXT:t3adminer/Resources/Private/Language/locallang.xlf');
 
         // This checks permissions and exits if the users has no permission for entry.
         $this->MCONF = $GLOBALS['TBE_MODULES']['_configuration']['tools_txt3adminerM1'];
@@ -73,8 +75,7 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 // Only use devIPmask if it is specific (not '*')
                 if ($devIPmask !== '*') {
                     if (!GeneralUtility::cmpIP($remoteAddress, $devIPmask)) {
-                        $this->printContent(sprintf($GLOBALS['LANG']->getLL('mlang_notindevipmask'), $remoteAddress));
-                        return;
+                        return $this->printContent(sprintf($GLOBALS['LANG']->getLL('mlang_notindevipmask'), $remoteAddress));
                     }
                 }
             }
@@ -83,8 +84,7 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $allowedIps = trim($extensionConfiguration['IPaccess']);
             if (!empty($allowedIps)) {
                 if (!GeneralUtility::cmpIP($remoteAddress, $allowedIps)) {
-                    $this->printContent(sprintf($GLOBALS['LANG']->getLL('mlang_notinipaccess'), $remoteAddress));
-                    return;
+                    return $this->printContent(sprintf($GLOBALS['LANG']->getLL('mlang_notinipaccess'), $remoteAddress));
                 }
             }
 
@@ -265,13 +265,14 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 foreach ($headers as $header) {
                     header($header);
                 }
+                exit();
             } else {
                 // No configuration set
                 $content = '<h3>Adminer module was not installed?</h3>';
                 if ($this->MCONF['ADM_subdir'] && !@is_dir($this->MCONF['ADM_subdir'])) {
                     $content .= '<hr /><strong>ERROR: The directory, ' . $this->MCONF['ADM_subdir'] . ', was NOT found!</strong><hr />';
                 }
-                $this->printContent($content);
+                return $this->printContent($content);
             }
         }
     }
@@ -280,6 +281,7 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * Prints out the module HTML
      *
      * @param string $content Content body as formatted HTML
+     * @return \TYPO3\CMS\Core\Http\HtmlResponse
      */
     public function printContent($content)
     {
@@ -288,7 +290,11 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
         $this->content .= $content;
         $this->content .= $this->doc->endPage();
-        // directly output content
-        echo $this->content;
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '9.0.0') === -1) {
+            // directly output content
+            echo $this->content;
+        } else {
+            return new HtmlResponse($this->content);
+        }
     }
 }

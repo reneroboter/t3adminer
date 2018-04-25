@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1524574898" source-language="en" datatype="plaintext" original="messages" date="2018-04-24T15:01:49Z" product-name="t3adminer">
+		<header/>
+		<body>
+			<trans-unit id="title">
+				<source>Adminer</source>
+			</trans-unit>
+			<trans-unit id="mlang_notindevipmask">
+				<source><![CDATA[<h3>Access Denied</h3><p>This Adminer-Module was configured with IP-based access restrictions and your REMOTE_ADDR (%s) is not in TYPO3 devIPmask.</p>]]></source>
+			</trans-unit>
+			<trans-unit id="mlang_notinipaccess">
+				<source><![CDATA[<h3>Access Denied</h3><p>This Adminer-Module was configured with IP-based access restrictions and your REMOTE_ADDR (%s) is not in the list of allowed IPs.</p>]]></source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

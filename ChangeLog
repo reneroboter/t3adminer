@@ -1,3 +1,14 @@
+2018-04-25 Jigal van Hemert <jigal.van.hemert@typo3.org>
+
+	* Compatibility for TYPO3 9.3-dev
+	* Update to Adminer 4.6.2
+	* Plug-ins adapted to changes in Adminer
+	* Thanks to Sebastian Fischer for the PR
+	* Removed unused code and images
+	* Version 9.1.0
+	* Switched to XLIFF files
+	* Used icon registry
+
 2017-12-26 Jigal van Hemert <jigal.van.hemert@typo3.org>
 
 	* Compatibility for TYPO3 9.0

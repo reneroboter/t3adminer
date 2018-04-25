@@ -20,7 +20,7 @@
       "homepage": "http://www.typo3coder.nl"
     }
   ],
-  "license": "GPL-2.0+",
+  "license": "GPL-2.0-or-later",
   "require": {
     "ext-Phar": "*",
     "php": ">=7.0.0 <7.3",

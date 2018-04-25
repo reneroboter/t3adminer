@@ -15,8 +15,8 @@ class AdminerReadableDates
 
     function __construct()
     {
-        $this->prepend = <<<EOT
-<script>
+        $this->prepend = '<script' . nonce() . '>';
+        $this->prepend .= <<<EOT
 document.addEventListener('DOMContentLoaded', function(event) {
 	var date = new Date();
 	var tds = document.querySelectorAll('span[class="datetimefield"]');

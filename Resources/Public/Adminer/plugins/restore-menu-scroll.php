@@ -14,7 +14,8 @@ class AdminerRestoreMenuScroll
      */
     public function __construct()
     {
-        $this->script = "<script type='text/javascript'>
+        $this->script = '<script type="text/javascript"' . nonce() . '>';
+        $this->script .= "
 (function(){
 	var executed = false;
 	var saveAndRestore = function() {
