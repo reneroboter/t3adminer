@@ -7,7 +7,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -23,11 +22,6 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  */
 class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 {
-    public $pageinfo;
-
-    /**
-     * @return \jigal\t3adminer\Controller\AdminerController
-     */
     public function __construct()
     {
         $GLOBALS['LANG']->includeLLFile('EXT:t3adminer/Resources/Private/Language/locallang.xlf');
@@ -38,17 +32,6 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         parent::init();
     }
 
-    /**
-     * Adds items to the ->MOD_MENU array. Used for the function menu selector.
-     */
-    public function menuConfig()
-    {
-        parent::menuConfig();
-    }
-
-    /**
-     * Main function of the module. Write the content to $this->content
-     */
     public function main()
     {
         // Access check!
@@ -71,21 +54,14 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             // Check for devIpMask restriction
             $useDevIpMask = (bool)$extensionConfiguration['applyDevIpMask'];
-            if ($useDevIpMask === true) {
-                // Only use devIPmask if it is specific (not '*')
-                if ($devIPmask !== '*') {
-                    if (!GeneralUtility::cmpIP($remoteAddress, $devIPmask)) {
-                        return $this->printContent(sprintf($GLOBALS['LANG']->getLL('mlang_notindevipmask'), $remoteAddress));
-                    }
-                }
+            if ($useDevIpMask === true && $devIPmask !== '*' && !GeneralUtility::cmpIP($remoteAddress, $devIPmask)) {
+                return $this->printContent(sprintf($GLOBALS['LANG']->getLL('mlang_notindevipmask'), $remoteAddress));
             }
 
             // Check for specified IP restrictions
             $allowedIps = trim($extensionConfiguration['IPaccess']);
-            if (!empty($allowedIps)) {
-                if (!GeneralUtility::cmpIP($remoteAddress, $allowedIps)) {
-                    return $this->printContent(sprintf($GLOBALS['LANG']->getLL('mlang_notinipaccess'), $remoteAddress));
-                }
+            if (!empty($allowedIps) && !GeneralUtility::cmpIP($remoteAddress, $allowedIps)) {
+                return $this->printContent(sprintf($GLOBALS['LANG']->getLL('mlang_notinipaccess'), $remoteAddress));
             }
 
             // Check export directory
@@ -182,60 +158,20 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                 // Mapping language keys for Adminer (both for TYPO3 4.5 and later versions)
                 $LANG_KEY_MAP = [
-                    'ar' => 'ar',       // Arabic
-                    //'' => 'bn',	    // Bengali
-                    'bg' => 'bg',       // Bulgarian
-                    'bs' => 'bs',       // Bosnian
-                    'ca' => 'ca',       // Catalan
-                    'cs' => 'cs',       // Czech
                     'cz' => 'cs',       // Czech
-                    'de' => 'de',       // German
-                    'da' => 'da',       // Danish
-                    'el' => 'el',       // Greek
-                    'en' => 'en',       // English
-                    'es' => 'es',       // Spanish
-                    'et' => 'et',       // Estonian
-                    'fi' => 'fi',       // Finnish
-                    'fa' => 'fa',       // Persian
-                    'fr' => 'fr',       // French
-                    'gl' => 'gl',       // Galician
-                    'hu' => 'hu',       // Hungarian
                     'ms' => 'id',       // Malay (Indonesian)
                     'my' => 'id',       // Malay (Indonesian)
-                    'it' => 'it',       // Italian
                     'jp' => 'ja',       // Japanese
-                    'ja' => 'ja',       // Japanese
-                    'ko' => 'ko',       // Korean
                     'kr' => 'ko',       // Korean
-                    'lt' => 'lt',       // Lithuanian
-                    'nl' => 'nl',       // Dutch
-                    'no' => 'no',       // Norwegian
-                    'pl' => 'pl',       // Polish
-                    'pt' => 'pt',       // Portuguese
                     'pt_BR' => 'pt-br', // Portuguese (Brazil)
                     'br' => 'pt-br',    // Portuguese (Brazil)
-                    'ro' => 'ro',       // Romanian
-                    'ru' => 'ru',       // Russian
-                    'sk' => 'sk',       // Slovak
                     'si' => 'sl',       // Slovenian
-                    'sl' => 'sl',       // Slovenian
-                    'sr' => 'sr',       // Serbian
-                    //'' => 'ta',	    // Tamil
-                    'th' => 'th',       // Thai
-                    'tr' => 'tr',       // Turkish
                     'ua' => 'uk',       // Ukrainian
-                    'uk' => 'uk',       // Ukrainian
-                    'vi' => 'vi',       // Vietnamese
                     'vn' => 'vi',       // Vietnamese
                     'hk' => 'zh',       // Chinese
                     'ch' => 'zh',       // Chinese
-                    'zh' => 'zh',       // Chinese
-                    //'' => 'zh-tw',	// Taiwanese
                 ];
-                $LANG_KEY = $LANG_KEY_MAP[$GLOBALS['LANG']->lang];
-                if (!$LANG_KEY) {
-                    $LANG_KEY = 'en';
-                }
+                $LANG_KEY = $LANG_KEY_MAP[$GLOBALS['LANG']->lang] ?? $GLOBALS['LANG']->lang ?? 'en';
 
                 // Redirect to adminer (should use absolute URL here!), setting default database
                 $redirect_uri = $_SESSION['ADM_SignonURL'] . '?lang=' . $LANG_KEY . '&db='
@@ -266,22 +202,23 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     header($header);
                 }
                 exit();
-            } else {
-                // No configuration set
-                $content = '<h3>Adminer module was not installed?</h3>';
-                if ($this->MCONF['ADM_subdir'] && !@is_dir($this->MCONF['ADM_subdir'])) {
-                    $content .= '<hr /><strong>ERROR: The directory, ' . $this->MCONF['ADM_subdir'] . ', was NOT found!</strong><hr />';
-                }
-                return $this->printContent($content);
             }
+
+            // No configuration set
+            $content = '<h3>Adminer module was not installed?</h3>';
+            if ($this->MCONF['ADM_subdir'] && !@is_dir($this->MCONF['ADM_subdir'])) {
+                $content .= '<hr /><strong>ERROR: The directory, ' . $this->MCONF['ADM_subdir'] . ', was NOT found!</strong><hr />';
+            }
+
+            return $this->printContent($content);
         }
     }
 
     /**
-     * Prints out the module HTML
+     * Prints out the module HTML or returns it in an HtmlResponse object
      *
      * @param string $content Content body as formatted HTML
-     * @return \TYPO3\CMS\Core\Http\HtmlResponse
+     * @return \TYPO3\CMS\Core\Http\HtmlResponse|void
      */
     public function printContent($content)
     {
@@ -290,11 +227,11 @@ class AdminerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
         $this->content .= $content;
         $this->content .= $this->doc->endPage();
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '9.0.0') === -1) {
-            // directly output content
-            echo $this->content;
-        } else {
+        if (class_exists(HtmlResponse::class)) {
             return new HtmlResponse($this->content);
         }
+
+        // directly output content
+        echo $this->content;
     }
 }
