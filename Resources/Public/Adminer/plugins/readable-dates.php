@@ -71,7 +71,7 @@ EOT;
         $return = ($link ? "<a href='" . h($link) . "'" . (self::is_url($link) ? " rel='noreferrer'" : "") . ">$return</a>" : $return);
 
         $table = $GLOBALS['a'];
-        if (in_array($field['field'], ['tstamp', 'crdate'])) {
+        if (in_array($field['field'], ['tstamp', 'crdate', $_SESSION['ADM_tca'][$table]['ctrl']['crdate'], $_SESSION['ADM_tca'][$table]['ctrl']['tstamp']])) {
             $return = '<span class="datetimefield">' . $return . '</span>';
         } elseif (!empty($_SESSION['ADM_tca'][$table]['columns'][$field['field']])) {
             $tcaConfiguration = $_SESSION['ADM_tca'][$table]['columns'][$field['field']]['config'];

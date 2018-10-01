@@ -18,9 +18,9 @@ call_user_func(function() {
         null,
         [
             'routeTarget' => jigal\t3adminer\Controller\AdminerController::class . '::main',
-            'access' => 'admin',
+            'access' => 'systemMaintainer',
             'name' => 'tools_txt3adminerM1',
-            'labels' => 'LLL:EXT:t3adminer/Resources/Private/Language/locallang_mod.xml',
+            'labels' => 'LLL:EXT:t3adminer/Resources/Private/Language/locallang_mod.xlf',
             'iconIdentifier' => 'adminer-module',
             'ADM_subdir' => 'Resources/Public/Adminer/',
             'ADM_script' => 't3adminer.php',

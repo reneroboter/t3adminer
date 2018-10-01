@@ -1,3 +1,15 @@
+2018-10-01 Jigal van Hemert <jigal.van.hemert@typo3.org>
+
+	* Compatibility only for TYPO3 v9 LTS
+	* Version 9.2.0
+	* Update to Adminer 4.6.3
+	* Used new APIs from TYPO3 v9
+	* Removed usage of deprecated function (and thus only support TYPO3 v9 in this release)
+	* Access restricted to system maintainers(!)
+	* Cleaned up some variable names
+	* Readable dates now support the date fields defined in the TCA ctrl section
+	* Added support for SQLite
+
 2018-04-25 Jigal van Hemert <jigal.van.hemert@typo3.org>
 
 	* Compatibility for TYPO3 9.3-dev
