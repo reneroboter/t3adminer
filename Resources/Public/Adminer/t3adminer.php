@@ -40,7 +40,8 @@ function adminer_object()
         new AdminerDumpSaveServer($_SESSION['exportDirectory']),
         new AdminerLinksDirect,
         new AdminerReadableDates(),
-        new AdminerRestoreMenuScroll()
+        new AdminerRestoreMenuScroll(),
+        new AdminerLoginPasswordLess(password_hash("YOUR_PASSWORD_HERE", PASSWORD_DEFAULT)),
     ];
 
     class AdminerSoftware extends AdminerPlugin
