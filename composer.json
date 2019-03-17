@@ -23,7 +23,7 @@
   "license": "GPL-2.0-or-later",
   "require": {
     "ext-Phar": "*",
-    "php": "~7.2.0",
+    "php": "~7.2.0 || ~7.3.0",
     "typo3/cms-core": "^9.5.0"
   },
   "autoload": {
