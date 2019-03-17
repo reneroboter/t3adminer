@@ -1,6 +1,6 @@
 2019-03-16 Jigal van Hemert <jigal.van.hemert@typo3.org>
 
-	* Compatibe with PHP 7.3
+	* Compatible with PHP 7.3 and TYPO3 10.0.0-dev
 	* Update to Adminer 4.7.1
 
 2018-10-01 Jigal van Hemert <jigal.van.hemert@typo3.org>
