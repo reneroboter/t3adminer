@@ -1,6 +1,8 @@
 <?php
 namespace jigal\t3adminer\Hooks;
 
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,26 +29,35 @@ namespace jigal\t3adminer\Hooks;
 class T3AdminerHooks
 {
 
-	/**
-	 * Hook to remove t3adminer session on logoff
-	 *
-	 * @param $parameters
-	 * @param $parentObject
-	 * @return void
-	 */
-	public function logoffHook(&$parameters, &$parentObject) {
-		unset(
-			$_SESSION['pwds'],
-			$_SESSION['ADM_driver'],
-			$_SESSION['ADM_user'],
-			$_SESSION['ADM_password'],
-			$_SESSION['ADM_server'],
-			$_SESSION['ADM_db'],
-			$_SESSION['ADM_extConf'],
-			$_SESSION['ADM_hideOtherDBs'],
-			$_SESSION['ADM_SignonURL'],
-			$_SESSION['ADM_LogoutURL'],
-			$_SESSION['ADM_uploadDir']
-		);
-	}
+    /**
+     * Hook to remove t3adminer session on logoff
+     *
+     * @param $parameters
+     * @param AbstractUserAuthentication $parentObject
+     * @return void
+     */
+    public function logoffHook(&$parameters, AbstractUserAuthentication $parentObject) {
+        if (isset($_SESSION)) {  // if there is already a session running
+            session_write_close(); // save and close it
+        }
+        if ($sessionId = $_COOKIE['tx_t3adminer']) { // if tx_t3adminer session cookie exist
+            session_id($sessionId);  // select tx_t3adminer session
+            session_start(); // start tx_t3adminer session
+            unset(
+                $_SESSION['pwds'],
+                $_SESSION['ADM_driver'],
+                $_SESSION['ADM_user'],
+                $_SESSION['ADM_password'],
+                $_SESSION['ADM_server'],
+                $_SESSION['ADM_db'],
+                $_SESSION['ADM_extConf'],
+                $_SESSION['ADM_hideOtherDBs'],
+                $_SESSION['ADM_SignonURL'],
+                $_SESSION['ADM_LogoutURL'],
+                $_SESSION['ADM_uploadDir']
+            );
+            session_write_close(); // close tx_t3adminer session
+            $parentObject->removeCookie('tx_t3adminer'); // remove tx_t3adminer session cookie
+        }
+    }
 }
