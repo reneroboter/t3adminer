@@ -1,7 +1,7 @@
 <?php
 namespace jigal\t3adminer\Controller;
 
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -29,11 +29,6 @@ class AdminerController
 
     /** @var string */
     protected $content;
-
-    /**
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    protected $documentTemplate;
 
     public function __construct()
     {
@@ -108,10 +103,8 @@ class AdminerController
             $_SESSION['ADM_driver'] = 'server';
             if (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driver'])) {
                 switch ($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driver']) {
-                    case 'mysqli':
-                        $_SESSION['ADM_driver'] = 'server';
-                        break;
                     case 'pdo_mysql':
+                    case 'mysqli':
                         $_SESSION['ADM_driver'] = 'server';
                         break;
                     case 'pdo_pgsql':
@@ -197,6 +190,7 @@ class AdminerController
                 'hk' => 'zh',       // Chinese
                 'ch' => 'zh',       // Chinese
             ];
+            // @extensionScannerIgnoreLine
             $LANG_KEY = $LANG_KEY_MAP[$GLOBALS['LANG']->lang] ?? $GLOBALS['LANG']->lang ?? 'en';
 
             // Redirect to adminer (should use absolute URL here!), setting default database
@@ -242,11 +236,10 @@ class AdminerController
      */
     public function printContent($content): HtmlResponse
     {
-        $this->documentTemplate = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->documentTemplate->backPath = $GLOBALS['BACK_PATH'];
-        $this->content = $this->documentTemplate->startPage($GLOBALS['LANG']->getLL('title'));
-        $this->content .= $content;
-        $this->content .= $this->documentTemplate->endPage();
+        $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $moduleTemplate->setTitle($GLOBALS['LANG']->getLL('title'));
+        $moduleTemplate->setContent($content);
+
         return new HtmlResponse($this->content);
     }
 
