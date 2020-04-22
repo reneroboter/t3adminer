@@ -37,12 +37,12 @@ class T3AdminerHooks
      * @return void
      */
     public function logoffHook(&$parameters, AbstractUserAuthentication $parentObject) {
-        if (isset($_SESSION)) {  // if there is already a session running
-            session_write_close(); // save and close it
+        if (isset($_SESSION)) {
+            session_write_close();
         }
-        if ($sessionId = $_COOKIE['tx_t3adminer']) { // if tx_t3adminer session cookie exist
-            session_id($sessionId);  // select tx_t3adminer session
-            session_start(); // start tx_t3adminer session
+        if ($sessionId = $_COOKIE['tx_t3adminer']) {
+            session_id($sessionId);
+            session_start();
             unset(
                 $_SESSION['pwds'],
                 $_SESSION['ADM_driver'],
@@ -56,8 +56,8 @@ class T3AdminerHooks
                 $_SESSION['ADM_LogoutURL'],
                 $_SESSION['ADM_uploadDir']
             );
-            session_write_close(); // close tx_t3adminer session
-            $parentObject->removeCookie('tx_t3adminer'); // remove tx_t3adminer session cookie
+            session_write_close();
+            $parentObject->removeCookie('tx_t3adminer');
         }
     }
 }
