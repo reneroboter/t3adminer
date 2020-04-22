@@ -1,3 +1,10 @@
+2020-04-22 Jigal van Hemert <jigal.van.hemert@typo3.org>
+	* Version 9.4.0
+	* Compatible with TYPO3 9.5 and 10.0
+	* Update to Adminer 4.7.6
+	* Clean up of session data on logout (thanks to Lex Frolenko)
+	* Added support for "p:" prefix in host for persistent connections (thanks to Patrick Schriner)
+
 2019-03-16 Jigal van Hemert <jigal.van.hemert@typo3.org>
 
 	* Compatible with PHP 7.3 and TYPO3 10.0.0-dev
